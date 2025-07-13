@@ -15,9 +15,21 @@ const App: React.FC = () => {
     setIsGameRunning(true);
     setTimeLeft(duration);
     setClickCount(0);
-  }
 
-  
+    intervalRef.current = setInterval(() => {
+      setTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalRef.current!);
+          setIsGameRunning(false);
+          setHighScore((prevHight) => Math.max(prevHight, clickCount));
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+
 
   const handleClick = () => {
     if (isGameRunning) {
